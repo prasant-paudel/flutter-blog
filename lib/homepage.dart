@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'blog_controller.dart';
-import 'blog_create_page.dart';
+import 'blog_create_update_page.dart';
 import 'blog_model.dart';
 
 class HomePage extends StatelessWidget {
@@ -25,7 +25,8 @@ class HomePage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.to(() => const BlogCreatePage()),
+        onPressed: () =>
+            Get.to(() => const BlogCreateUpdatePage(action: BlogAction.create)),
         child: const Icon(Icons.add),
       ),
     );
@@ -83,7 +84,12 @@ class BlogCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // -------------------- Edit Button --------------------
-                ElevatedButton(onPressed: () {}, child: const Text('Edit')),
+                ElevatedButton(
+                    onPressed: () => Get.to(() => BlogCreateUpdatePage(
+                          action: BlogAction.update,
+                          blog: blog,
+                        )),
+                    child: const Text('Edit')),
                 const SizedBox(width: 8),
                 // -------------------- Delete Button --------------------
                 ElevatedButton(

@@ -5,14 +5,28 @@ import 'package:image_picker/image_picker.dart';
 import 'blog_controller.dart';
 import 'blog_model.dart';
 
-class BlogCreatePage extends StatelessWidget {
-  const BlogCreatePage({super.key});
+enum BlogAction {
+  create,
+  update,
+}
+
+class BlogCreateUpdatePage extends StatelessWidget {
+  const BlogCreateUpdatePage({required this.action, this.blog, super.key});
+
+  final BlogAction action;
+  final Blog? blog;
 
   @override
   Widget build(BuildContext context) {
+    BlogController.to.titleController.text = blog?.title ?? '';
+    BlogController.to.descriptionController.text = blog?.description ?? '';
+    BlogController.to.image.value = blog?.image;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Blog'),
+        title: Text(
+          action == BlogAction.create ? 'Create Blog' : 'Update Blog',
+        ),
       ),
       resizeToAvoidBottomInset: true,
       body: Padding(
@@ -76,12 +90,21 @@ class BlogCreatePage extends StatelessWidget {
               // -------------------- Save Button --------------------
               ElevatedButton(
                 onPressed: () {
-                  BlogController.to.addBlog(Blog(
-                    id: DateTime.now().toString(),
-                    title: BlogController.to.titleController.text,
-                    description: BlogController.to.descriptionController.text,
-                    image: BlogController.to.image.value,
-                  ));
+                  if (action == BlogAction.update) {
+                    BlogController.to.updateBlog(Blog(
+                      id: blog!.id,
+                      title: BlogController.to.titleController.text,
+                      description: BlogController.to.descriptionController.text,
+                      image: BlogController.to.image.value,
+                    ));
+                  } else {
+                    BlogController.to.addBlog(Blog(
+                      id: DateTime.now().toString(),
+                      title: BlogController.to.titleController.text,
+                      description: BlogController.to.descriptionController.text,
+                      image: BlogController.to.image.value,
+                    ));
+                  }
                   Get.back();
                 },
                 child: const Text('Save'),
