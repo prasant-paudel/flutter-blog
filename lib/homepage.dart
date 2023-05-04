@@ -45,16 +45,21 @@ class BlogCard extends StatelessWidget {
       onTap: () => Get.to(() => BlogDetailPage(blog)),
       child: Card(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
           child: Column(
             children: [
               // -------------------- Image --------------------
               if (blog.image != null)
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.file(
-                    blog.image!,
-                    height: 104,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.file(
+                      blog.image!,
+                      height: 104,
+                      width: 104,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               // -------------------- Title --------------------
