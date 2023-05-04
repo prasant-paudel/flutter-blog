@@ -40,14 +40,19 @@ class BlogController extends GetxController {
     }
   }
 
+  /// Save blog image to local storage and return image path
+  Future<String> _saveBlogImage(String id, File image) async {
+    final appDocDir = await getApplicationDocumentsDirectory();
+    final file = File('${appDocDir.path}/$id');
+    file.writeAsBytesSync(image.readAsBytesSync());
+    return file.path;
+  }
+
   /// Add blog to storage
   Future<void> addBlog(Blog blog) async {
     // Save image to local storage
     if (blog.image != null) {
-      final appDocDir = await getApplicationDocumentsDirectory();
-      final file = File('${appDocDir.path}/${blog.id}');
-      file.writeAsBytesSync(blog.image!.readAsBytesSync());
-      blog.imagePath = file.path;
+      blog.imagePath = await _saveBlogImage(blog.id, blog.image!);
     }
 
     await _box.write(blog.id, blog.toJson());
@@ -62,7 +67,12 @@ class BlogController extends GetxController {
   }
 
   /// Update blog in storage
-  void updateBlog(Blog blog) {
+  void updateBlog(Blog blog) async {
+    // Update image
+    if (blog.image != null) {
+      blog.imagePath = await _saveBlogImage(blog.id, blog.image!);
+    }
+
     _box.write(blog.id, blog.toJson());
     final index = blogs.indexWhere((element) => element.id == blog.id);
     blogs[index] = blog;
