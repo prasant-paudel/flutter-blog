@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import 'blog_controller.dart';
 import 'blog_create_update_page.dart';
+import 'blog_detail_page.dart';
 import 'blog_model.dart';
 
 class HomePage extends StatelessWidget {
@@ -40,68 +41,70 @@ class BlogCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // -------------------- Image --------------------
-            if (blog.image != null)
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.file(
-                  blog.image!,
-                  height: 104,
-                ),
-              ),
-            // -------------------- Title --------------------
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Text(
-                blog.title,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            // -------------------- Divider --------------------
-            const Divider(
-              thickness: 1.5,
-            ),
-            // -------------------- Description --------------------
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Text(
-                blog.description,
-                style: const TextStyle(
-                  fontSize: 16,
-                ),
-              ),
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // -------------------- Edit Button --------------------
-                ElevatedButton(
-                    onPressed: () => Get.to(() => BlogCreateUpdatePage(
-                          action: BlogAction.update,
-                          blog: blog,
-                        )),
-                    child: const Text('Edit')),
-                const SizedBox(width: 8),
-                // -------------------- Delete Button --------------------
-                ElevatedButton(
-                  onPressed: () => BlogController.to.deleteBlog(blog),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.red),
+    return InkWell(
+      onTap: () => Get.to(() => BlogDetailPage(blog)),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              // -------------------- Image --------------------
+              if (blog.image != null)
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.file(
+                    blog.image!,
+                    height: 104,
                   ),
-                  child: const Text('Delete'),
                 ),
-              ],
-            ),
-          ],
+              // -------------------- Title --------------------
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Text(
+                  blog.title,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              // -------------------- Divider --------------------
+              const Divider(
+                thickness: 1.5,
+              ),
+              // -------------------- Description --------------------
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Text(
+                  blog.description,
+                  style: const TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // -------------------- Edit Button --------------------
+                  ElevatedButton(
+                      onPressed: () => Get.to(() => const BlogCreateUpdatePage(
+                            action: BlogAction.update,
+                          )),
+                      child: const Text('Edit')),
+                  const SizedBox(width: 8),
+                  // -------------------- Delete Button --------------------
+                  ElevatedButton(
+                    onPressed: () => BlogController.to.deleteBlog(blog),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.red),
+                    ),
+                    child: const Text('Delete'),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
