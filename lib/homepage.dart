@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
 
 import 'blog_controller.dart';
 import 'blog_create_update_page.dart';
@@ -91,6 +92,14 @@ class BlogCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // -------------------- Share Button --------------------
+                  ElevatedButton(
+                    onPressed: () {
+                      Share.share(blog.description, subject: blog.title);
+                    },
+                    child: const Text('Share'),
+                  ),
+                  const SizedBox(width: 8),
                   // -------------------- Edit Button --------------------
                   ElevatedButton(
                       onPressed: () => Get.to(() => BlogCreateUpdatePage(
