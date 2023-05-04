@@ -93,8 +93,9 @@ class BlogCard extends StatelessWidget {
                 children: [
                   // -------------------- Edit Button --------------------
                   ElevatedButton(
-                      onPressed: () => Get.to(() => const BlogCreateUpdatePage(
+                      onPressed: () => Get.to(() => BlogCreateUpdatePage(
                             action: BlogAction.update,
+                            blog: blog,
                           )),
                       child: const Text('Edit')),
                   const SizedBox(width: 8),
